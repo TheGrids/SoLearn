@@ -10,6 +10,9 @@
   "dependencies": {
     "@tinymce/tinymce-vue": "^4.0.7",
     "pinia": "^2.0.32",
+    "primeicons": "^6.0.1",
+    "primevue": "^3.25.0",
+    "sass": "^1.59.3",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
   },
