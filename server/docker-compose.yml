@@ -1,0 +1,10 @@
+version: "3.7"
+
+services:
+  app:
+    image: solearn-serv
+    ports:
+      - 8081:8080
+    build:
+      context: .
+      dockerfile: ./Dockerfile
