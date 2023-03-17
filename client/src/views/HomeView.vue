@@ -1,9 +1,15 @@
-<script setup>
-import TheWelcome from '../components/TheWelcome.vue'
-</script>
-
 <template>
   <main>
-    <TheWelcome />
+    <WYSIWYGEditor />
   </main>
 </template>
+
+<script>
+import WYSIWYGEditor from "@/components/WYSIWYGEditor.vue";
+export default {
+  name: 'app',
+  components: {
+    WYSIWYGEditor,
+  },
+}
+</script>
