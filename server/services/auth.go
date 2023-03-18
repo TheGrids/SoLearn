@@ -116,7 +116,7 @@ func Logout(c *gin.Context) {
 }
 
 // CheckToken Проверка JWT
-func CheckToken(token string, c *gin.Context) bool {
+func CheckToken(token string) bool {
 	type MyCustomClaims struct {
 		ID    uint   `json:"userid"`
 		Email string `json:"email"`
@@ -127,10 +127,7 @@ func CheckToken(token string, c *gin.Context) bool {
 		return []byte(os.Getenv("JWT_SECRET")), nil
 	})
 
-	var user models.User
-
 	if _, ok := tokenParse.Claims.(*MyCustomClaims); ok && tokenParse.Valid {
-		c.Header("Role", string(user.Role))
 		return true
 	}
 	return false
@@ -147,16 +144,14 @@ func Refresh(c *gin.Context) {
 
 	token := models.Token{}
 
-	if err := models.DB.Where("refresh=?", tokenRefresh).First(&token).Error; err == nil && CheckToken(tokenRefresh, c) {
+	if err := models.DB.Where("refresh=?", tokenRefresh).First(&token).Error; err == nil && CheckToken(tokenRefresh) {
 		user := models.User{}
 
 		models.DB.Where("id=?", token.UserID).First(&user)
 
-		newToken := CreateToken(user)
-
-		c.JSON(http.StatusOK, gin.H{"access": newToken})
+		c.JSON(http.StatusOK, gin.H{"access": CreateToken(user)})
 		return
-	} else if !CheckToken(tokenRefresh, c) {
+	} else if !CheckToken(tokenRefresh) {
 		models.DB.Delete(&token)
 	}
 
@@ -198,7 +193,7 @@ func Verification(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": "Не найден токен."})
 		return
 	}
-	if CheckToken(token, c) {
+	if CheckToken(token) {
 		c.JSON(http.StatusOK, gin.H{"msg": "Успешный успех"})
 	} else {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": "Ваша сессия истекла. Пожалуйста, войдите заново."})
