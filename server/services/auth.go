@@ -35,7 +35,8 @@ func RegisterUser(c *gin.Context) {
 
 	SendEmailUUID(input.Email, emailCheck.UUID)
 
-	c.JSON(http.StatusOK, gin.H{"msg": "Мы отправили письмо с подтверждением на вашу электронную почту. Вы сможете зайти на аккант только после подтверждения."})
+
+	c.JSON(http.StatusOK, gin.H{"msg": "Регистрация прошла успешно."})
 }
 
 // LoginUser Авторизация
@@ -59,10 +60,11 @@ func LoginUser(c *gin.Context) {
 		return
 	}
 
-	if user.Role == 1 {
-		c.JSON(http.StatusForbidden, gin.H{"msg": "Подтвердите адрес электронной почты"})
-		return
-	}
+
+	//if user.Role == 1 {
+	//	c.JSON(http.StatusForbidden, gin.H{"msg": "Подтвердите адрес электронной почты"})
+	//	return
+	//}
 
 	tokens := models.Token{UserID: user.ID, Refresh: CreateTokenRefresh()}
 
@@ -115,7 +117,7 @@ func Logout(c *gin.Context) {
 }
 
 // CheckToken Проверка JWT
-func CheckToken(token string) bool {
+func CheckToken(token string, c *gin.Context) bool {
 	type MyCustomClaims struct {
 		ID    uint   `json:"userid"`
 		Email string `json:"email"`
@@ -126,7 +128,12 @@ func CheckToken(token string) bool {
 		return []byte(os.Getenv("JWT_SECRET")), nil
 	})
 
-	if _, ok := tokenParse.Claims.(*MyCustomClaims); ok && tokenParse.Valid {
+	var user models.User
+
+	err := models.DB.Where("id=?", tokenParse.Claims.(*MyCustomClaims).ID).First(&user).Error
+
+	if _, ok := tokenParse.Claims.(*MyCustomClaims); ok && tokenParse.Valid && err == nil {
+		c.Header("Role", string(user.Role))
 		return true
 	}
 	return false
@@ -143,7 +150,7 @@ func Refresh(c *gin.Context) {
 
 	token := models.Token{}
 
-	if err := models.DB.Where("refresh=?", tokenRefresh).First(&token).Error; err == nil && CheckToken(tokenRefresh) {
+	if err := models.DB.Where("refresh=?", tokenRefresh).First(&token).Error; err == nil && CheckToken(tokenRefresh, c) {
 		user := models.User{}
 
 		models.DB.Where("id=?", token.UserID).First(&user)
@@ -152,7 +159,7 @@ func Refresh(c *gin.Context) {
 
 		c.JSON(http.StatusOK, gin.H{"access": newToken})
 		return
-	} else if !CheckToken(tokenRefresh) {
+	} else if !CheckToken(tokenRefresh, c) {
 		models.DB.Delete(&token)
 	}
 
@@ -194,7 +201,7 @@ func Verification(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": "Не найден токен."})
 		return
 	}
-	if CheckToken(token) {
+	if CheckToken(token, c) {
 		c.JSON(http.StatusOK, gin.H{"msg": "Успешный успех"})
 	} else {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": "Ваша сессия истекла. Пожалуйста, войдите заново."})
