@@ -1,23 +1,33 @@
 import {ref} from 'vue'
 import {defineStore} from 'pinia'
+import AuthService from "@/services/auth.service";
 
 export const useAuthStore = defineStore('auth', () => {
-    const user = ref({
-        id: null,
-        email: null,
-    })
+    const user = ref(null);
 
-    async function signUp() {
-
+    async function signIn(formFields) {
+        const response = await AuthService.signIn(formFields);
+        // const token = response.data.token;
+        // const userFromToken = null;
+        // // const user = {
+        // //     id:
+        // // }
+        // user.value = user;
     }
 
-    function signIn() {
-
+    async function signUp(formFields) {
+        const response = await AuthService.signUp(formFields);
+        await signIn(formFields);
+        return response;
     }
 
     function logout() {
-
+        user.value = null;
     }
 
-    return {count, doubleCount, increment}
+    return {
+        signIn,
+        signUp,
+        logout,
+    };
 })

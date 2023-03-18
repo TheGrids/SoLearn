@@ -5,7 +5,7 @@
         <p class="title">
           <span style="color: #383B41;">So</span><span style="color: #697187">Learn</span>
         </p>
-        <Button rounded link>
+        <Button v-if="authStore.user" rounded link>
           <i class="pi pi-sign-out" size="small" style="font-size: 1.5rem;"></i>
         </Button>
       </div>
@@ -17,8 +17,14 @@
 </template>
 
 <script>
+import {mapStores} from "pinia";
+import {useAuthStore} from "@/stores/auth";
+
 export default {
-  name: "MainLayout"
+  name: "MainLayout",
+  computed: {
+    ...mapStores(useAuthStore)
+  },
 }
 </script>
 
