@@ -38,6 +38,16 @@
                         <InputText v-if="this.changeMod.main" type="password" class="p-inputtext-sm" placeholder="Пароль" />
                         <div v-else class="group-item__info">***********</div>
                     </div>
+
+                    <div class="group-item">
+                        <div class="group-item__name">Аккаунт</div>
+                        <div class="acc-info">
+                            <i v-if="acc" class="pi pi-check-circle" style="font-size: 24px;"></i>
+                            <div v-if="acc" class="acc-text">Аккаунт подтвержден</div>
+                            <i v-if="!acc" class="pi pi-times-circle" style="font-size: 24px; color: #FF7676"></i>
+                            <div v-if="!acc" class="acc-text">Аккаунт не подтвержден</div>
+                        </div>
+                    </div>
                 </div>
 
                 <Button style="margin: 10px 10px 0 0 " v-if="!this.changeMod.main" v-on:click="this.changeMod.main = !this.changeMod.main" label="Изменить" severity="secondary" rounded />
@@ -88,7 +98,8 @@ export default {
         return {
             changeMod: {
                 main: false
-            }
+            },
+            acc: true
         }
     }
 }
@@ -160,6 +171,14 @@ export default {
             font-weight: 400;
             font-size: 20px;
         }
+    }
+}
+.acc-info {
+    display: flex;
+    align-items: center;
+    .acc-text {
+        font-size: 20px;
+        margin-left: 10px;
     }
 }
 </style>
