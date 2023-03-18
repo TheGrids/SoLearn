@@ -35,6 +35,7 @@ func RegisterUser(c *gin.Context) {
 
 	SendEmailUUID(input.Email, emailCheck.UUID)
 
+
 	c.JSON(http.StatusOK, gin.H{"msg": "Регистрация прошла успешно."})
 }
 
@@ -58,6 +59,7 @@ func LoginUser(c *gin.Context) {
 		c.JSON(http.StatusForbidden, gin.H{"msg": "Неверный пароль"})
 		return
 	}
+
 
 	//if user.Role == 1 {
 	//	c.JSON(http.StatusForbidden, gin.H{"msg": "Подтвердите адрес электронной почты"})
