@@ -10,35 +10,23 @@ const router = createRouter({
       children: [{
         path: '',
         component: () => import('../views/HomeView.vue')
-      }]
-    },
-    {
-      path: '/profile',
-      name: 'profile',
-      component: () => import('../layouts/MainLayout.vue'),
-      children: [{
-        path: '',
+      },
+      {
+        path: '/profile',
+        name: 'profile',
         component: () => import('../views/ProfileView.vue')
-      }]
-    },
-    {
-      path: '/registration',
-      name: 'registration',
-      component: () => import('../layouts/MainLayout.vue'),
-      children: [{
-        path: '',
+      },
+      {
+        path: '/registration',
+        name: 'registration',
         component: () => import('../views/RegistrationView.vue')
-      }]
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import('../layouts/MainLayout.vue'),
-      children: [{
-        path: '',
+      },
+      {
+        path: '/login',
+        name: 'login',
         component: () => import('../views/LoginView.vue')
       }]
-    },
+    }
   ]
 })
 
