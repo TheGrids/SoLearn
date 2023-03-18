@@ -25,3 +25,28 @@ type Token struct {
 	UserID  uint   `json:"user-id"`
 	Refresh string `json:"refresh"`
 }
+
+type Course struct {
+	ID          uint       `gorm:"primary_key" json:"id"`
+	CreatedAt   time.Time  `json:"created_at"`
+	UpdatedAt   time.Time  `json:"updated_at"`
+	DeletedAt   *time.Time `json:"deleted_at"`
+	Name        string     `json:"name"`
+	Description string     `json:"description"`
+	Likes       uint       `json:"likes"`
+	Chapter     []Chapter  `json:"chapter"`
+}
+
+type Chapter struct {
+	ID       uint      `gorm:"primary_key" json:"id"`
+	CourseID uint      `json:"course_id"`
+	Number   uint      `json:"number"`
+	Name     string    `json:"name"`
+	Subject  []Subject `json:"subject"`
+}
+
+type Subject struct {
+	ChapterID uint    `json:"chapterID"`
+	Number    float32 `json:"number"`
+	Name      string  `json:"name"`
+}
