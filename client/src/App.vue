@@ -1,9 +1,11 @@
 <script setup>
-import { RouterView } from 'vue-router';
+import {RouterView} from 'vue-router';
+import Toast from "primevue/toast";
 </script>
 
 <template>
-  <RouterView />
+  <RouterView/>
+  <Toast/>
 </template>
 
 <style scoped>

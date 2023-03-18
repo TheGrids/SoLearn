@@ -39,7 +39,7 @@ export default {
         font-size: 28px;
         margin: 0 auto;
     }
-    
+
     .dop-text {
         text-align: center;
         color: #8E8E8E;
