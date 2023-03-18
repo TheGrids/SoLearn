@@ -14,6 +14,21 @@ const router = createRouter({
       {
         path: '/profile',
         name: 'profile',
+      }]
+    },
+    {
+      path: '/create-course',
+      component: () => import('../layouts/MainLayout.vue'),children: [{
+        path: '',
+        component: () => import('../views/CreateCourseView.vue')
+      }],
+    },
+    {
+      path: '/profile',
+      name: 'profile',
+      component: () => import('../layouts/MainLayout.vue'),
+      children: [{
+        path: '',
         component: () => import('../views/ProfileView.vue')
       },
       {
@@ -31,6 +46,10 @@ const router = createRouter({
         name: 'courses',
         component: () => import('../views/CoursesView.vue')
       }]
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      component: () => import('../views/NotFound.vue')
     }
   ]
 })

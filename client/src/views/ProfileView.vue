@@ -22,16 +22,17 @@
                 <span class="item-text">Главная</span>
             </router-link>
         </div>
-        <div class="profile-main">
+        <TransitionGroup name="list">
+          <div class="profile-main">
             <div class="page-name">Личные данные</div>
             <div class="page-category">Основные</div>
             <div class="group-wrp">
-                <div class="group">
-                    <div class="group-item">
-                        <div class="group-item__name">Email</div>
-                        <InputText v-if="this.changeMod.main" type="text" class="p-inputtext-sm" placeholder="Иванов" />
-                        <div  v-else class="group-item__info">dmfdsfd.fd@gmail.com</div>
-                    </div>
+              <div class="group">
+                <div class="group-item">
+                  <div class="group-item__name">Email</div>
+                  <InputText v-if="this.changeMod.main" type="text" class="p-inputtext-sm" placeholder="Иванов" />
+                  <div  v-else class="group-item__info">dmfdsfd.fd@gmail.com</div>
+                </div>
 
                     <div class="group-item">
                         <div class="group-item__name">Пароль</div>
@@ -49,46 +50,54 @@
                         </div>
                     </div>
                 </div>
+              </div>
 
-                <Button style="margin: 10px 10px 0 0 " v-if="!this.changeMod.main" v-on:click="this.changeMod.main = !this.changeMod.main" label="Изменить" severity="secondary" rounded />
+              <Button style="margin: 10px 10px 0 0 " v-if="!this.changeMod.main" v-on:click="this.changeMod.main = !this.changeMod.main" label="Изменить" severity="secondary" rounded />
 
-                <Button style="margin: 10px 10px 0 0" v-if="this.changeMod.main" label="Сохранить" severity="secondary" rounded />
-                <Button style="margin: 10px 10px 0 0" v-if="this.changeMod.main" label="Отмена" v-on:click="this.changeMod.main = !this.changeMod.main" severity="danger" rounded />
+              <Button style="margin: 10px 10px 0 0" v-if="this.changeMod.main" label="Сохранить" severity="secondary" rounded />
+              <Button style="margin: 10px 10px 0 0" v-if="this.changeMod.main" label="Отмена" v-on:click="this.changeMod.main = !this.changeMod.main" severity="danger" rounded />
             </div>
 
             <div class="page-category">Дополнительные</div>
             <div class="group-wrp">
-                <div class="group">
-                    <div class="group-item">
-                        <div class="group-item__name">Фамилия</div>
-                        <InputText v-if="this.changeMod.more" type="text" class="p-inputtext-sm" placeholder="Иванов" />
-                        <div v-else class="group-item__info">Иванов</div>
-                    </div>
-
-                    <div class="group-item">
-                        <div class="group-item__name">Имя</div>
-                        <InputText v-if="this.changeMod.more" type="text" class="p-inputtext-sm" placeholder="Иван" />
-                        <div v-else class="group-item__info">Иван</div>
-                    </div>
-
-                    <div class="group-item">
-                        <div class="group-item__name">Отчество</div>
-                        <InputText v-if="this.changeMod.more" type="text" class="p-inputtext-sm" placeholder="Иванович" />
-                        <div v-else class="group-item__info">Иванович</div>
-                    </div>
+              <div class="group">
+                <div class="group-item">
+                  <div class="group-item__name">Фамилия</div>
+                  <InputText v-if="this.changeMod.more" type="text" class="p-inputtext-sm" placeholder="Иванов" />
+                  <div v-else class="group-item__info">Иванов</div>
                 </div>
 
-                <Button style="margin: 10px 10px 0 0" v-if="!this.changeMod.more" label="Изменить" v-on:click="this.changeMod.more = !this.changeMod.more" severity="secondary" rounded />
+                <div class="group-item">
+                  <div class="group-item__name">Имя</div>
+                  <InputText v-if="this.changeMod.more" type="text" class="p-inputtext-sm" placeholder="Иван" />
+                  <div v-else class="group-item__info">Иван</div>
+                </div>
 
-                <Button style="margin: 10px 10px 0 0" v-if="this.changeMod.more" label="Сохранить" severity="secondary" rounded />
-                <Button style="margin: 10px 10px 0 0" v-if="this.changeMod.more" label="Отмена" v-on:click="this.changeMod.more = !this.changeMod.more" severity="danger" rounded />
+                <div class="group-item">
+                  <div class="group-item__name">Отчество</div>
+                  <InputText v-if="this.changeMod.more" type="text" class="p-inputtext-sm" placeholder="Иванович" />
+                  <div v-else class="group-item__info">Иванович</div>
+                </div>
+              </div>
+
+              <Button style="margin: 10px 10px 0 0" v-if="!this.changeMod.more" label="Изменить" v-on:click="this.changeMod.more = !this.changeMod.more" severity="secondary" rounded />
+
+              <Button style="margin: 10px 10px 0 0" v-if="this.changeMod.more" label="Сохранить" severity="secondary" rounded />
+              <Button style="margin: 10px 10px 0 0" v-if="this.changeMod.more" label="Отмена" v-on:click="this.changeMod.more = !this.changeMod.more" severity="danger" rounded />
             </div>
-        </div>       
+        </TransitionGroup>
     </div>
 </template>
 
 <script>
 import InputText from "primevue/inputtext"
+
+const TabsMap = {
+  courses: 'courses',
+  main: 'main',
+  adminPanel: 'adminPanel',
+};
+
 export default {
     name: 'profile',
     components: {
@@ -110,7 +119,6 @@ export default {
     display: flex;
     width: 100%;
     max-width: 1440px;
-    padding: 20px;
     margin: 0 auto;
 
     color: #383B41;
