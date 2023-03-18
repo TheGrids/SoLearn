@@ -11,7 +11,7 @@ type User struct {
 	Password   string     `json:"password" binding:"required"`
 	FirstName  string     `json:"first_name" binding:"required"`
 	LastName   string     `json:"last_name" binding:"required"`
-	Role       Role       `json:"role" gorm:"default:1"`
+	Role       byte       `json:"role" gorm:"default:1"`
 	EmailCheck EmailCheck `json:"email_check"`
 	Token      []Token    `json:"token"`
 }

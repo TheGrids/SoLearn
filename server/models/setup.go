@@ -29,7 +29,7 @@ func ConnectionDataBase() {
 	}
 
 	// Adding schema to database
-	err = database.AutoMigrate(&User{}, &EmailCheck{}, &Token{})
+	err = database.AutoMigrate(&User{}, &EmailCheck{}, &Token{}, &Course{})
 	if err != nil {
 		return
 	}

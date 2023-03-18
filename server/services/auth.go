@@ -2,6 +2,7 @@ package services
 
 import (
 	"crypto/md5"
+	"errors"
 	"fmt"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -9,6 +10,7 @@ import (
 	"net/http"
 	"os"
 	"solearn.ru/m/v2/models"
+	"strconv"
 	"time"
 )
 
@@ -74,7 +76,6 @@ func LoginUser(c *gin.Context) {
 
 // CreateToken Создание JWT
 func CreateToken(user models.User) string {
-	fmt.Println(user.ID, user.Email)
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"userid": user.ID,
 		"email":  user.Email,
@@ -115,11 +116,40 @@ func Logout(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"msg": "Вы успешно вышли из системы"})
 }
 
-// CheckToken Проверка JWT
-func CheckToken(token string) bool {
+func CheckAccessToken(c *gin.Context) (uint, byte, error) {
 	type MyCustomClaims struct {
 		ID    uint   `json:"userid"`
 		Email string `json:"email"`
+		jwt.StandardClaims
+	}
+
+	token := c.Request.Header.Get("Authorization")
+
+	if token == "" {
+		return 0, 0, errors.New("token not found")
+	}
+
+	tokenParse, _ := jwt.ParseWithClaims(token, &MyCustomClaims{}, func(token *jwt.Token) (interface{}, error) {
+		return []byte(os.Getenv("JWT_SECRET")), nil
+	})
+
+	var user models.User
+
+	err := models.DB.Where("id=?", tokenParse.Claims.(*MyCustomClaims).ID).First(&user).Error
+
+	if _, ok := tokenParse.Claims.(*MyCustomClaims); ok && tokenParse.Valid && err == nil {
+		role := strconv.FormatUint(uint64(user.Role), 10)
+		c.Header("Role", role)
+		return user.ID, user.Role, err
+	}
+
+	return 0, 0, err
+
+}
+
+// CheckRefreshToken Проверка JWT Refresh
+func CheckRefreshToken(token string) bool {
+	type MyCustomClaims struct {
 		jwt.StandardClaims
 	}
 
@@ -144,14 +174,14 @@ func Refresh(c *gin.Context) {
 
 	token := models.Token{}
 
-	if err := models.DB.Where("refresh=?", tokenRefresh).First(&token).Error; err == nil && CheckToken(tokenRefresh) {
+	if err := models.DB.Where("refresh=?", tokenRefresh).First(&token).Error; err == nil && CheckRefreshToken(tokenRefresh) {
 		user := models.User{}
 
 		models.DB.Where("id=?", token.UserID).First(&user)
 
 		c.JSON(http.StatusOK, gin.H{"access": CreateToken(user)})
 		return
-	} else if !CheckToken(tokenRefresh) {
+	} else if !CheckRefreshToken(tokenRefresh) {
 		models.DB.Delete(&token)
 	}
 
@@ -193,7 +223,7 @@ func Verification(c *gin.Context) {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": "Не найден токен."})
 		return
 	}
-	if CheckToken(token) {
+	if CheckRefreshToken(token) {
 		c.JSON(http.StatusOK, gin.H{"msg": "Успешный успех"})
 	} else {
 		c.JSON(http.StatusBadRequest, gin.H{"msg": "Ваша сессия истекла. Пожалуйста, войдите заново."})

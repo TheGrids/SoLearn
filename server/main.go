@@ -26,6 +26,7 @@ func main() {
 	r.POST("/login", services.LoginUser)
 	r.GET("/logout", services.Logout)
 	r.POST("/refresh", services.Refresh)
+	r.GET("/getcourses", services.GetCourses)
 
 	//r.Static("/image", "./image")
 	//r.GET("/new_products", services.GetNewProducts)
