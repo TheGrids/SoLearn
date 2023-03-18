@@ -1,6 +1,6 @@
 <template>
     <div class="form">
-        <div class="form-name">Регистрация</div>
+        <div class="form-name">Авторизация</div>
         <div class="p-input-icon-left" style="width: 100%">
             <i style="z-index: 111;" class="pi pi-at" />
             <InputText placeholder="Email" style="width: 100%"/>
@@ -9,12 +9,8 @@
             <i style="z-index: 111;" class="pi pi-lock" />
             <InputText placeholder="Пароль"  style="width: 100%" />
         </div>
-        <div class="p-input-icon-left" style="width: 100%">
-            <i style="z-index: 111;" class="pi pi-lock" />
-            <InputText placeholder="Повтор пароль"  style="width: 100%" />
-        </div>
-        <Button label="Зарегистрироваться" style="width: 100%" severity="secondary" rounded />
-        <span class="dop-text">Есть аккаунт?<router-link class="dop-link" to="/login"> Войдите</router-link></span>
+        <Button label="Авторизоваться" style="width: 100%" severity="secondary" rounded />
+        <span class="dop-text">Нет аккаунта?<router-link class="dop-link" to="/registration"> Создате</router-link></span>
     </div>
 </template>
 
@@ -22,9 +18,9 @@
 import InputText from "primevue/inputtext"
 
 export default {
-    name: 'registration',
+    name: 'login',
     components: {
-        InputText,
+        InputText
     }
 }
 </script>
@@ -43,7 +39,7 @@ export default {
         font-size: 28px;
         margin: 0 auto;
     }
-
+    
     .dop-text {
         text-align: center;
         color: #8E8E8E;
