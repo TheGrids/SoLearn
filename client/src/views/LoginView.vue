@@ -10,7 +10,7 @@
             <InputText placeholder="Пароль"  style="width: 100%" />
         </div>
         <Button label="Авторизоваться" style="width: 100%" severity="secondary" rounded />
-        <span class="dop-text">Нет аккаунта?<router-link class="dop-link" to="/registration"> Создате</router-link></span>
+        <span class="dop-text">Нет аккаунта?<router-link class="dop-link" to="/registration"> Создайте</router-link></span>
     </div>
 </template>
 
