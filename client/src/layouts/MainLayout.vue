@@ -5,8 +5,15 @@
         <p class="title">
           <span style="color: #383B41;">So</span><span style="color: #697187">Learn</span>
         </p>
-        <Button v-if="authStore.user" rounded link>
-          <i class="pi pi-sign-out" size="small" style="font-size: 1.5rem;"></i>
+        <Button
+            v-if="authStore.user"
+            @click="signOutClicked"
+            :loading="signOutLoading"
+            v-tooltip.bottom="'Выйти'"
+            rounded
+            link
+        >
+          <i class="pi pi-sign-out" size="small" style="font-size: 1.2rem;"></i>
         </Button>
       </div>
     </header>
@@ -22,9 +29,22 @@ import {useAuthStore} from "@/stores/auth";
 
 export default {
   name: "MainLayout",
+  data() {
+    return {
+      signOutLoading: false,
+    };
+  },
   computed: {
     ...mapStores(useAuthStore)
   },
+  methods: {
+    async signOutClicked() {
+      this.signOutLoading = true;
+      await this.authStore.logout();
+      this.$router.replace({name: 'login'});
+      this.signOutLoading = false;
+    }
+  }
 }
 </script>
 

@@ -10,7 +10,8 @@
       <i style="z-index: 111;" class="pi pi-lock"/>
       <InputText v-model="formFields.password" required placeholder="Пароль" style="width: 100%"/>
     </div>
-    <Button type="submit" label="Авторизоваться" style="width: 100%" severity="secondary" rounded/>
+    <Button :loading="signInLoading" type="submit" label="Авторизоваться" style="width: 100%" severity="secondary"
+            rounded/>
     <span class="dop-text">Нет аккаунта?<router-link class="dop-link" to="/registration"> Создайте</router-link></span>
   </form>
 </template>
@@ -31,15 +32,20 @@ export default {
         email: '',
         password: '',
       },
+      signInLoading: false,
     }
   },
   methods: {
     async signIn() {
+      this.signInLoading = true;
       try {
         await this.authStore.signIn(this.formFields);
         this.$router.push({path: '/'});
       } catch (error) {
+        console.log(error)
         this.showError(error.response.data.msg);
+      } finally {
+        this.signInLoading = false;
       }
     },
     showError(message) {
