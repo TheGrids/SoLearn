@@ -35,7 +35,6 @@ func RegisterUser(c *gin.Context) {
 
 	SendEmailUUID(input.Email, emailCheck.UUID)
 
-
 	c.JSON(http.StatusOK, gin.H{"msg": "Регистрация прошла успешно."})
 }
 
@@ -60,7 +59,6 @@ func LoginUser(c *gin.Context) {
 		return
 	}
 
-
 	//if user.Role == 1 {
 	//	c.JSON(http.StatusForbidden, gin.H{"msg": "Подтвердите адрес электронной почты"})
 	//	return
@@ -76,6 +74,7 @@ func LoginUser(c *gin.Context) {
 
 // CreateToken Создание JWT
 func CreateToken(user models.User) string {
+	fmt.Println(user.ID, user.Email)
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"userid": user.ID,
 		"email":  user.Email,
@@ -130,9 +129,7 @@ func CheckToken(token string, c *gin.Context) bool {
 
 	var user models.User
 
-	err := models.DB.Where("id=?", tokenParse.Claims.(*MyCustomClaims).ID).First(&user).Error
-
-	if _, ok := tokenParse.Claims.(*MyCustomClaims); ok && tokenParse.Valid && err == nil {
+	if _, ok := tokenParse.Claims.(*MyCustomClaims); ok && tokenParse.Valid {
 		c.Header("Role", string(user.Role))
 		return true
 	}

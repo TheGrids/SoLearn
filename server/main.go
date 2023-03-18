@@ -25,7 +25,7 @@ func main() {
 	r.GET("/activate/:uuid", services.Activate)
 	r.POST("/login", services.LoginUser)
 	r.GET("/logout", services.Logout)
-	r.GET("/refresh", services.Refresh)
+	r.POST("/refresh", services.Refresh)
 
 	//r.Static("/image", "./image")
 	//r.GET("/new_products", services.GetNewProducts)
