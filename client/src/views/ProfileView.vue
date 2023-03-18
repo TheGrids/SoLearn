@@ -22,6 +22,7 @@
                 <span class="item-text">Главная</span>
             </router-link>
         </div>
+
         <div class="profile-main">
             <div class="page-name">Личные данные</div>
             <div class="page-category">Основные</div>
@@ -160,7 +161,7 @@ export default {
         flex-wrap: wrap;
     }
     .group-item {
-        min-width: 300px;
+        min-width: 250px;
 
         .group-item__name {
             font-weight: 400;
@@ -181,6 +182,16 @@ export default {
     .acc-text {
         font-size: 20px;
         margin-left: 10px;
+    }
+}
+
+@media screen  and (max-width: 1024px) {  
+    .item-text {
+        display: none;
+    }
+    .profile-nav {
+        min-width: auto;
+        
     }
 }
 </style>
