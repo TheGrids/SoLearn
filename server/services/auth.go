@@ -112,7 +112,7 @@ func Logout(c *gin.Context) {
 		models.DB.Where("user_id=?", token.UserID).Delete(&token)
 	}
 
-	c.SetCookie("refresh_token", "", -1, "/", "", false, true)
+	c.SetCookie("refresh_token", "", -1, "/", "solearn.ru", true, true)
 	c.JSON(http.StatusOK, gin.H{"msg": "Вы успешно вышли из системы"})
 }
 
