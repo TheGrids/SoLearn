@@ -17,6 +17,7 @@ func main() {
 		AllowOrigins:     []string{"http://localhost:5173", "https://solearn.ru", "http://127.0.0.1:5173"},
 		AllowHeaders:     []string{"Role", "Origin", "Content-Type", "Authorization"},
 		AllowMethods:     []string{"GET", "POST", "PUT", "DELETE"},
+		ExposeHeaders:    []string{"Role"},
 		AllowCredentials: true,
 		MaxAge:           1 * time.Minute,
 	}))
