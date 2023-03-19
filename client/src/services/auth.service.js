@@ -11,6 +11,8 @@ class AuthService {
         return this.httpClient.post('login', {
             email: formFields.email,
             password: formFields.password,
+        }, {
+            withCredentials: true,
         });
     }
 
@@ -20,6 +22,8 @@ class AuthService {
             password: formFields.password,
             first_name: formFields.firstName,
             last_name: formFields.lastName,
+        }, {
+            withCredentials: true,
         });
     }
 
