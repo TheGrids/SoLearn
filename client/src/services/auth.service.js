@@ -33,8 +33,11 @@ class AuthService {
     }
 
     async refresh() {
-        const response = await this.httpClient.get('refresh');
+        const response = await this.httpClient.post('refresh', {}, {
+            withCredentials: true,
+        });
         this.saveToken(response.data.access);
+        return response.data.access;
     }
 
     getToken() {

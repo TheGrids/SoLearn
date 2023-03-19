@@ -2,19 +2,24 @@
   <div style="padding: 15px">
     <header class="app-header">
       <div class="app-header__content">
-        <p class="title">
+        <router-link to="/" class="title">
           <span style="color: #383B41;">So</span><span style="color: #697187">Learn</span>
-        </p>
-        <Button
-            v-if="authStore.user"
-            @click="signOutClicked"
-            :loading="signOutLoading"
-            v-tooltip.bottom="'Выйти'"
-            rounded
-            link
-        >
-          <i class="pi pi-sign-out" size="small" style="font-size: 1.2rem;"></i>
-        </Button>
+        </router-link>
+        <div class="app-header-menu">
+          <router-link to="/profile">
+            <Button icon="pi pi-user" link style="margin-right: 15px" v-tooltip.bottom="'Профиль'"/>
+          </router-link>
+          <Button
+              v-if="authStore.user"
+              @click="signOutClicked"
+              :loading="signOutLoading"
+              v-tooltip.bottom="'Выйти'"
+              rounded
+              class="logout"
+              icon="pi pi-sign-out"
+              link
+          />
+        </div>
       </div>
     </header>
     <main class="main-content">
@@ -77,5 +82,18 @@ export default {
       font-weight: 700;
     }
   }
+}
+
+.logout {
+  min-width: 30px;
+  min-height: 30px;
+  display: flex;
+  justify-content: center;
+  align-center: center;
+}
+
+.app-header-menu {
+  display: flex;
+  flex-direction: row;
 }
 </style>

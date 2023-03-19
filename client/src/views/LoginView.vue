@@ -40,10 +40,11 @@ export default {
       this.signInLoading = true;
       try {
         await this.authStore.signIn(this.formFields);
-        this.$router.push({path: '/'});
+        this.$router.push({path: '/available-courses'});
       } catch (error) {
         console.log(error)
-        this.showError(error.response.data.msg);
+        const message = error.response ? error.response.data.msg : error.message;
+        this.showError(message);
       } finally {
         this.signInLoading = false;
       }
