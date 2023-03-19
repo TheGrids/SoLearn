@@ -36,7 +36,6 @@
 
 <script>
 import InputText from "primevue/inputtext"
-import AuthService from "@/services/auth.service";
 import {computed, ref} from "vue";
 import {useAuthStore} from "@/stores/auth";
 import {mapStores} from "pinia";
@@ -92,9 +91,10 @@ export default {
         try {
           const response = await this.authStore.signUp(this.formFields);
           this.showSuccess(response.data.msg);
-          this.$router.push({path: '/'})
+          this.$router.push({path: '/available-courses'})
         } catch (error) {
-          this.showError(error.response.data.msg);
+          const message = error.response ? error.response.data.msg : error.message;
+          this.showError(message);
         } finally {
           this.signUpIsLoading = false;
         }

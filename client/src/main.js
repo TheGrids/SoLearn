@@ -13,10 +13,13 @@ import '@/assets/main.css';
 import "primevue/resources/themes/lara-light-indigo/theme.css";
 //core
 import "primevue/resources/primevue.min.css";
+import Tooltip from 'primevue/tooltip';
+
 //icons
 import "primeicons/primeicons.css";
 
 import ToastService from 'primevue/toastservice';
+import {useAuthStore} from "@/stores/auth";
 
 
 const app = createApp(App)
@@ -27,5 +30,9 @@ app.use(ToastService)
 app.component('Button', Button)
 app.component('InputText', InputText)
 app.component('InputNumber', InputNumber)
+app.directive('tooltip', Tooltip);
+
+const authStore = useAuthStore();
+authStore.checkAuth();
 
 app.mount('#app')
