@@ -1,14 +1,16 @@
 <template>
   <div style="min-height: 100vh; display: flex; flex-direction: column; justify-content: space-between">
-    <div class="font-bold text-4xl mt-4 mb-14" style="color: #232323">
-      Доступные курсы
-    </div>
-    <div class="wrapper">
-      <CourseCard
-          v-for="course in courses"
-          :course="course"
-          :key="course.id"
-      />
+    <div>
+      <div class="font-bold text-4xl mt-4 mb-14" style="color: #232323">
+        Доступные курсы
+      </div>
+      <div class="wrapper">
+        <CourseCard
+            v-for="course in courses"
+            :course="course"
+            :key="course.id"
+        />
+      </div>
     </div>
     <footer>
       <div class="container">

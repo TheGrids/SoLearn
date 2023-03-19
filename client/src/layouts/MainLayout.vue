@@ -6,7 +6,7 @@
           <span style="color: #383B41;">So</span><span style="color: #697187">Learn</span>
         </router-link>
         <div class="app-header-menu">
-          <router-link to="/profile">
+          <router-link v-if="isAuthorized && $route.path !== '/profile' && $route.path !== '/courses'" to="/profile">
             <Button icon="pi pi-user" link style="margin-right: 15px" v-tooltip.bottom="'Профиль'"/>
           </router-link>
           <Button
@@ -40,7 +40,10 @@ export default {
     };
   },
   computed: {
-    ...mapStores(useAuthStore)
+    ...mapStores(useAuthStore),
+    isAuthorized() {
+      return !!this.authStore.user;
+    },
   },
   methods: {
     async signOutClicked() {
