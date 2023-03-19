@@ -6,26 +6,27 @@
     <div class="row" style="gap: 10px; width: 100%">
       <div class="column" style="width: 100%">
         <span class="text-2xl mb-2">Название</span>
-        <InputText placeholder="Введите название" />
+        <InputText placeholder="Введите название"/>
       </div>
 
       <div class="column" style="width: 100%">
         <span class="text-2xl mb-2">Категория</span>
-        <InputText placeholder="Введите категорию" />
+        <InputText placeholder="Введите категорию"/>
       </div>
     </div>
     <div class="column mt-5">
       <span class="text-2xl mb-2">Описание</span>
-      <InputText placeholder="Введите описание" />
+      <InputText placeholder="Введите описание"/>
     </div>
     <div class="mt-10 text-2xl mb-10">Программа курса</div>
     <TransitionGroup name="list" tag="div">
       <CourseTheme
           v-for="(item, idx) in themes"
           :theme="item"
+          @remove="removeTheme"
           @update:theme="updateTheme"
           :step-number="++idx"
-          :key="idx"
+          :key="item.id"
       />
     </TransitionGroup>
     <div
@@ -33,7 +34,7 @@
         style="gap: 15px; max-width: 200px"
     >
       <Button class="app-button" @click="addTheme" label="Добавить тему"/>
-      <Button class="app-button" label="Сохранить"/>
+      <Button @click="createCourse" class="app-button" label="Сохранить"/>
     </div>
   </div>
 </template>
@@ -58,7 +59,7 @@ export default {
       this.themes.push({
         id: uuidV4(),
         title: '',
-        subparagraphs: [],
+        subThemes: [],
       });
     },
     updateTheme(updatedTheme) {
@@ -68,7 +69,13 @@ export default {
         }
         return theme;
       });
-    }
+    },
+    removeTheme(id) {
+      this.themes = this.themes.filter((theme) => theme.id !== id);
+    },
+    createCourse() {
+      console.log(this.themes)
+    },
   }
 }
 </script>
@@ -103,5 +110,9 @@ export default {
   border-radius: 25px;
   background: #181818;
   color: #f2f2f2;
+}
+
+.p-dialog-mask {
+  z-index: 1 !important;
 }
 </style>

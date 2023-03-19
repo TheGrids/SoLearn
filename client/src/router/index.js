@@ -44,11 +44,31 @@ const router = createRouter({
                     name: 'courses',
                     component: () => import('../views/CoursesView.vue')
                 },
+                {
+                    path: '/courses/:id',
+                    name: 'course',
+                    component: () => import('../views/CourseView.vue')
+                },
             ],
             meta: {
                 requiredAuth: true,
             },
         },
+        {
+            path: '/available-courses',
+            component: () => import('../layouts/MainLayout.vue'),
+            children: [
+                {
+                    path: '',
+                    name: 'available-courses',
+                    component: () => import('../views/AvailableCoursesView.vue')
+                },
+            ],
+            meta: {
+                requiredAuth: true,
+            },
+        },
+
         {
             path: '/registration',
             component: () => import('../layouts/MainLayout.vue'),
@@ -89,7 +109,7 @@ router.beforeEach((to, from, next) => {
         next({name: 'login'});
     } else if (authStore.user && isAuthRoutes) {
         // TODO: перенаправить на курсы
-        next({path: '/'});
+        next({path: '/available-courses'});
     } else {
         next();
     }

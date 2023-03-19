@@ -1,32 +1,40 @@
-import axios, {HttpStatusCode} from "axios";
+import axios from "axios";
 import AuthService from "@/services/auth.service";
 
 const api = axios.create({
     baseURL: import.meta.env.VITE_API_BASE_URL,
+    withCredentials: true,
     headers: {
         'Content-Type': 'application/json'
     },
-    withCredentials: true,
 });
 
 api.interceptors.request.use((request) => {
-    const authHeader = `Bearer ${AuthService.getToken()}`
-    request.headers.Authorization = authHeader;
+    request.headers.Authorization = AuthService.getToken();
     return request;
 });
+
+const RolesMap = {
+    Guest: "0",
+    LPP: "1",
+    Person: "2",
+    Admin: "3"
+}
 
 api.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalConfig = error.config;
         if (error.response) {
-            if (error.response.status === HttpStatusCode.Unauthorized && !originalConfig._retry) {
-                originalConfig._retry = true;
-
-                // Do something, call refreshToken() request for example;
-                // return a request
-                await AuthService.refresh();
-                return axios(originalConfig);
+            const role = error.response.headers.role;
+            if (role) {
+                if (role === RolesMap.Guest) {
+                    const accessToken = await AuthService.refresh();
+                    if (!accessToken) {
+                        await AuthService.logout();
+                    }
+                    return axios(originalConfig);
+                }
             }
 
             return Promise.reject(error);
