@@ -10,7 +10,8 @@
         </Button>
         <img
             style="height: 100px"
-            src="https://i.pinimg.com/originals/83/f6/5e/83f65e8c6efc88fabfcfbb11cf63bd8a.gif"
+            :src="course.image"
+            alt="Course preview"
         />
       </div>
     </template>
