@@ -143,6 +143,7 @@ func CheckAccessToken(c *gin.Context) (uint, byte, error) {
 		return user.ID, user.Role, err
 	}
 
+	c.Header("Role", "0")
 	return 0, 0, err
 
 }
