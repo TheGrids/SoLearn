@@ -34,6 +34,7 @@ type Course struct {
 	Name        string     `json:"name"`
 	Description string     `json:"description"`
 	Likes       uint       `json:"likes"`
+	Image       string     `json:"image"`
 	Chapter     []Chapter  `json:"chapter"`
 }
 
