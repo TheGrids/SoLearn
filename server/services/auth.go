@@ -69,7 +69,7 @@ func LoginUser(c *gin.Context) {
 	tokens := models.Token{UserID: user.ID, Refresh: CreateTokenRefresh()}
 
 	models.DB.Create(&tokens)
-	c.SetCookie("refresh_token", tokens.Refresh, 60*60*24*30, "/", os.Getenv("COOKIE_HTTP"), false, true) // if https: secure = true
+	c.SetCookie("refresh_token", tokens.Refresh, 60*60*24*30, "/", "https://solearn.ru", false, true) // if https: secure = true
 	c.JSON(http.StatusOK, gin.H{"access": CreateToken(user)})
 
 }
